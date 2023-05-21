@@ -36,7 +36,8 @@ public class EnemyAI : MonoBehaviour
         {
             ChaseTarget();
         }
-        else if (distanceToTarget <= navMeshAgent.stoppingDistance)
+        //TODO: There is a problem with the mechanics of the AttackTarget method, try to solve this.
+        if (distanceToTarget <= navMeshAgent.stoppingDistance)
         {
             AttackTarget();
         }
