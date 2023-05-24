@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] float range = 100f;
     [SerializeField] float damage = 30f;  //* The weapon's damage 
     [SerializeField] ParticleSystem muzzleFlash;
+    [SerializeField] GameObject hitEffect;
 
     void Update()
     {
@@ -39,7 +40,7 @@ public class Weapon : MonoBehaviour
         if (Physics.Raycast(FPCamera.transform.position, FPCamera.transform.forward, out hit, range))
         {
             Debug.Log("I hit this thing:" + hit.transform.name);
-            //TODO: Add some visual or sound hit effect for players
+            CreateHitImpact(hit);
             EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
             //* Prevent the error messages when we shoot the game props
             if (target == null) return;
@@ -50,5 +51,15 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
+    }
+
+    void CreateHitImpact(RaycastHit hit)
+    {
+        GameObject impact = Instantiate(hitEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        //* hit.point is the location of the instationtion
+        //* Quaternion.identity would do the same thing
+        //* The hit.normal is the "normal" from the physics
+        //* Look rotation means where the player look at
+        Destroy(impact, 0.1f);
     }
 }
