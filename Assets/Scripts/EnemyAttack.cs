@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour
 {
-    [SerializeField] Transform target;
-    //TODO: We will change the target like the enemy will find it.
+    PlayerHealth target;
     [SerializeField] float damage = 40f;
+    public float Damage { get { return damage; } }
+
     void Start()
     {
-
+        target = FindObjectOfType<PlayerHealth>();
     }
     public void AttackHitEvent()
     {
         if (target == null) return;
+        target.TakeDamage();
         Debug.Log("bang bang");
     }
 }
