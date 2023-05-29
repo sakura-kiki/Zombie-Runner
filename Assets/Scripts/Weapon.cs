@@ -6,23 +6,41 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] Camera FPCamera;
-    [SerializeField] float range = 100f;
-    [SerializeField] float damage = 30f;  //* The weapon's damage 
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject hitEffect;
+    [SerializeField] Ammo ammoSlot;
+    [SerializeField] AmmoType ammoType;
+    [SerializeField] float range = 100f;
+    [SerializeField] float damage = 30f;  //* The weapon's damage 
+    [SerializeField] float timeBetweenShots = 0.5f;
+    bool canShoot = true;
+
+    private void OnEnable()
+    {
+        canShoot = true;
+    }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetMouseButtonDown(0) && canShoot == true)
         {
-            Shoot();
+            StartCoroutine(Shoot());
         }
     }
 
-    private void Shoot()
+    IEnumerator Shoot()
     {
-        PlayMuzzleFlash();
-        ProcessRaycast();
+        canShoot = false;
+
+        if (ammoSlot.GetCurrentAmmo(ammoType) > 0)
+        {
+            PlayMuzzleFlash();
+            ProcessRaycast();
+            ammoSlot.ReduceCurrentAmmo(ammoType);
+        }
+        yield return new WaitForSeconds(timeBetweenShots);
+
+        canShoot = true;
     }
 
     void PlayMuzzleFlash()

@@ -15,6 +15,7 @@ public class DeathHandler : MonoBehaviour
     {
         gameOverCanvas.enabled = true;
         SetCursorVisible();
+        FindObjectOfType<WeaponSwitcher>().enabled = false;
     }
 
     void SetCursorVisible()
